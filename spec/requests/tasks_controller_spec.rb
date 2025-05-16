@@ -31,6 +31,7 @@ RSpec.describe 'TasksControllers', type: :request do
   describe 'PATCH' do
     before do
       @task = Task.create(title: 'title', description: 'description')
+      @new_task = Task.new(title: 'title 2', description: 'description')
     end
 
     it 'patch completes task' do
@@ -39,5 +40,11 @@ RSpec.describe 'TasksControllers', type: :request do
       expect(JSON.parse(response.body)).to have_key('completed_at')
       expect(JSON.parse(response.body)['completed_at']).not_to eql(nil)
     end
+
+    it 'patch returns not found' do
+      patch "/tasks/#{@new_task.id}/completed", params: { id: @new_task.id }
+      expect(response).to have_http_status(:not_found)
+    end
+
   end
 end

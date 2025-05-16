@@ -32,4 +32,21 @@ RSpec.describe Task, type: :model do
     task.valid?
     expect(task.errors).not_to be_blank
   end
+
+  describe 'incomplete tasks' do
+    before do
+      @task_a = Task.create(title: 'title', description: 'description')
+      @task_b = Task.new(title: 'title 2', description: 'description')
+      @task_a.completed_at = Time.now
+    end
+    it 'has at least one incomplete task' do
+      incomplete_tasks = Task.incomplete
+      incomplete_tasks.present?
+      expect(incomplete_tasks.size).to be >= 1
+    end
+
+    
+
+  end
+
 end
